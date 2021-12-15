@@ -17,11 +17,11 @@
 // const path = require('path')
 // const app = express()
 
-import express from 'express';
-import path from 'path';
+const express = require('express');
+const path = require('path');
 const app = express()
 
-import sum from './Addition.js';
+// const sum = require('./Addition.js');
 
 app.use(express.static('public'));
 
@@ -29,21 +29,21 @@ app.listen(3333, (request, response) => {
   console.log("App listening on port 3000")
 });
 
-app.get('/about', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'about.html'))
+app.get('/about',(req,res)=>{
+  res.sendFile(path.resolve(__dirname,'pages/about.html'))
 })
 
-app.get('/contact', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'contact.html'))
+app.get('/contact',(req,res)=>{
+  res.sendFile(path.resolve(__dirname,'pages/contact.html'))
 })
 
-app.get('/content', (req, res) => {
-  res.send('The content')
+app.get('/post',(req,res)=>{
+  res.sendFile(path.resolve(__dirname,'pages/post.html'))
 })
 
 
 app.get("/", (req, res) => {
-  console.log(sum());
+  // console.log(sum());
   res.send('The home page')
 })
 
