@@ -26,8 +26,13 @@ const app = express()
 app.use(express.static('public'));
 
 app.listen(3333, (request, response) => {
-  console.log("App listening on port 3000")
+  console.log("App listening on port 3333")
 });
+
+app.get("/", (req, res) => {
+  // console.log(sum());
+  res.sendFile(path.resolve(__dirname,'pages/index.html'))
+})
 
 app.get('/about',(req,res)=>{
   res.sendFile(path.resolve(__dirname,'pages/about.html'))
@@ -40,13 +45,6 @@ app.get('/contact',(req,res)=>{
 app.get('/post',(req,res)=>{
   res.sendFile(path.resolve(__dirname,'pages/post.html'))
 })
-
-
-app.get("/", (req, res) => {
-  // console.log(sum());
-  res.send('The home page')
-})
-
 
 app.get('*', function (req, res) {
   res.header(404)
