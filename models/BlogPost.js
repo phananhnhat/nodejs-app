@@ -9,7 +9,8 @@ const BlogPostSchema = new Schema({
   datePosted:{ /* can declare property type with an object like this because we need 'default' */
     type: Date,
     default: new Date()
-  }
+  },
+  image: String,
 });
 
 const BlogPost = mongoose.model('BlogPost',BlogPostSchema);

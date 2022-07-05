@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
+const fileUpload = require('express-fileupload')
 
 const BlogPost = require('./models/BlogPost')
 
@@ -13,6 +14,7 @@ app.set('view engine','ejs')
 app.use(express.static('public'));
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
+app.use(fileUpload())
 
 
 mongoose.connect('mongodb://localhost:27017', {useNewUrlParser: true});
@@ -57,14 +59,25 @@ app.get('/posts/new',(req,res)=>{
   res.render('create');
 })
 
-app.post('/posts/store',async(req,res)=>{
-  console.log(req.body);
+app.post('/posts/store',(req,res)=>{
+  // Chap 6 -----------------------
   // BlogPost.create(req.body,(error,blogpost) =>{
   //   res.redirect('/')
   // })
 
-  await BlogPost.create(req.body)
-  res.redirect('/')
+  // await BlogPost.create(req.body)
+  // res.redirect('/')
+  // ------------------------------
+
+  let image = req.files.image;
+  image.mv(path.resolve(__dirname, 'public/img', image.name), async (error) => {
+    console.log(error)
+    await BlogPost.create({
+      ...req.body,
+      image: '/img/' + image.name
+    })
+    res.redirect('/');
+  })
 })
 
 app.get('/test-mongodb',(req,res)=>{
