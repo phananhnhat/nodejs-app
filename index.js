@@ -6,6 +6,15 @@ const fileUpload = require('express-fileupload')
 
 const BlogPost = require('./models/BlogPost')
 
+// Controller
+const getPostController = require('./controllers/getPost')
+const homeController = require('./controllers/home')
+const newPostController = require('./controllers/newPost')
+const storePostController = require('./controllers/storePost')
+
+// Middleware
+const validationMiddleware = require("./middleware/validationMiddleware");
+
 const app = express()
 
 const ejs = require('ejs')
@@ -15,6 +24,7 @@ app.use(express.static('public'));
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(fileUpload())
+app.use('/posts/store', validationMiddleware)
 
 
 mongoose.connect('mongodb://localhost:27017', {useNewUrlParser: true});
@@ -23,106 +33,13 @@ app.listen(3333, (request, response) => {
   console.log("App listening on port 3333")
 });
 
-app.get("/", async (req, res) => {
-  // res.sendFile(path.resolve(__dirname,'pages/index.html'))
+app.get('/', homeController)
 
-  // res.render('index');
+app.get('/post/:id', getPostController)
 
-  const blogposts = await BlogPost.find({})
-  res.render('index',{
-    blogposts: blogposts
-  });
-})
+app.get('/posts/new', newPostController)
 
-app.get('/about',(req,res)=>{
-  // res.sendFile(path.resolve(__dirname,'pages/about.html'))
-  res.render('about');
-})
-
-app.get('/contact',(req,res)=>{
-  // res.sendFile(path.resolve(__dirname,'pages/contact.html'))
-  res.render('contact');
-})
-
-app.get('/post/:id', async (req,res)=>{
-  // res.sendFile(path.resolve(__dirname,'pages/post.html'))
-  // res.render('post')
-
-  const blogpost = await BlogPost.findById(req.params.id)
-  res.render('post',{
-    blogpost
-  })
-})
-
-app.get('/posts/new',(req,res)=>{
-  // res.sendFile(path.resolve(__dirname,'pages/post.html'))
-  res.render('create');
-})
-
-app.post('/posts/store',(req,res)=>{
-  // Chap 6 -----------------------
-  // BlogPost.create(req.body,(error,blogpost) =>{
-  //   res.redirect('/')
-  // })
-
-  // await BlogPost.create(req.body)
-  // res.redirect('/')
-  // ------------------------------
-
-  let image = req.files.image;
-  image.mv(path.resolve(__dirname, 'public/img', image.name), async (error) => {
-    console.log(error)
-    await BlogPost.create({
-      ...req.body,
-      image: '/img/' + image.name
-    })
-    res.redirect('/');
-  })
-})
-
-app.get('/test-mongodb',(req,res)=>{
-//   BlogPost.create({
-//     title: 'this is title',
-//     body: `If you`,
-// }, (error, blogpost) =>{
-//     console.log(error,blogpost)
-//   })
-
-  // BlogPost.find({}, (error, blogspot) =>{
-  //   console.log(error,blogspot)
-  // })
-
-  // BlogPost.find({
-  //   title:'this is title'
-  // }, (error, blogspot) =>{
-  //   console.log(error,blogspot)
-  // })
-  //
-  // BlogPost.find({
-  //   title: /this is/
-  // }, (error, blogspot) =>{
-  //   console.log(error,blogspot)
-  // })
-
-  // const id = "61baf1a96d6fd46add8b6c8f";
-  // BlogPost.findById(id, (error, blogspot) =>{
-  //   console.log(error,blogspot)
-  // })
-
-  // const id = "62bece81d1108fd764a81d02";
-  // BlogPost.findByIdAndUpdate(id,{
-  //   title:'this is title - Updated title'
-  // }, (error, blogspot) =>{
-  //   console.log(error,blogspot)
-  // })
-
-  // var id = "5cb436980b33147489eadfbb";
-  // BlogPost.findByIdAndDelete(id, (error, blogspot) =>{
-  //   console.log(error,blogspot)
-  // })
-
-  res.render('post');
-})
+app.post('/posts/store', storePostController)
 
 app.get('*', function (req, res) {
   res.header(404)
