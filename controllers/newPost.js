@@ -1,4 +1,7 @@
 module.exports = (req, res) => {
     // res.sendFile(path.resolve(__dirname,'pages/post.html')) // => Khi di chuyển từ index.js vào thư mục controller thì path sẽ ko chính xác nữa
-   res.render('create');
+   if(req.session.userId){
+      return res.render("create");
+   }
+   res.redirect('/auth/login')
 }
