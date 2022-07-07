@@ -20,19 +20,26 @@
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
+                <% if(errors != null && errors.length > 0){ %>
+                    <ul class="list-group"></ul>
+                    <% for (var i = 0; i < errors.length; i++) { %>
+                        <li class="list-group-item list-group-item-danger"><%= errors[i] %></li>
+                    <% } %>
+                    </ul>
+                <% } %>
                 <form action="/users/register" method="POST" enctype="multipart/form-data">
                     <div class="control-group">
                         <div class="form-group floating-label-form-group controls">
                             <label>User Name</label>
                             <input type="text" class="form-control" placeholder="User Name"
-                                   id="username" name="username">
+                                   id="username" name="username" value="<%=username %>" >
                         </div>
                     </div>
                     <div class="control-group">
                         <div class="form-group floating-label-form-group controls">
                             <label>Password</label>
                             <input type="password" class="form-control" placeholder="Password" id="password"
-                                   name="password">
+                                   name="password" value="<%=password %>" >
                         </div>
                     </div>
                     <br>

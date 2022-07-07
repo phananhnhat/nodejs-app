@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload')
 const expressSession = require('express-session');
+const flash = require('connect-flash');
 
 // Controller
 const getPostController = require('./controllers/getPost')
@@ -32,6 +33,7 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(fileUpload())
 app.use('/posts/store', validationMiddleware)
 app.use(expressSession({secret: 'keyboard cat'}))
+app.use(flash());
 
 app.use('/post/:id', (req,res,next) => {
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
