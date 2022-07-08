@@ -43,9 +43,17 @@ app.use('/post/:id', (req,res,next) => {
 
 mongoose.connect('mongodb+srv://admin:System.out12345@clusterfirst.vokf8bf.mongodb.net/my_database', {useNewUrlParser: true});
 
-app.listen(3333, (request, response) => {
-  console.log("App listening on port 3333")
-});
+// app.listen(3333, (request, response) => {
+//   console.log("App listening on port 3333")
+// });
+
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 33333;
+}
+app.listen(port, ()=>{
+  console.log('App listening...')
+})
 
 global.loggedIn = null;
 app.use("*", (req, res, next) => {

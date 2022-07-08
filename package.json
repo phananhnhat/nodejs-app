@@ -11,7 +11,10 @@
     "type": "git",
     "url": "git+https://github.com/phananhnhat/nodejs-app.git"
   },
-  "author": "",
+  "engines":{
+    "node": "16.13.1"
+  },
+  "author": "anhnhatphan1995@gmail.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/phananhnhat/nodejs-app/issues"
