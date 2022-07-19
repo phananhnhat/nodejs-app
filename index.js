@@ -69,6 +69,10 @@ app.get('/post/:id', getPostController)
 
 app.get('/posts/new', authMiddleware, newPostController)
 
+app.get("/list_movies", (req, res) => {
+  res.json({a : 1, b : 2});
+});
+
 app.post('/posts/store', authMiddleware, storePostController)
 
 app.get('/auth/register', redirectIfAuthenticatedMiddleware, newUserController);

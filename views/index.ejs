@@ -46,5 +46,16 @@
         </div>
         <%- include('layouts/footer'); -%>
         <%- include('layouts/scripts'); -%>
+
+    <script>
+        setTimeout(() => {
+          fetch('http://localhost:3333/list_movies')
+            .then(response => response.json())
+            .then(data => {
+              debugger;
+              console.log(data)
+            });
+        }, 3000)
+    </script>
     </body>
 </html>
