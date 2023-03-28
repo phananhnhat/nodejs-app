@@ -10,6 +10,7 @@ module.exports = (req, res) =>{
           // if passwords match
           // store user session, will talk about it later
           req.session.userId = user._id
+          res.cookie('token', 'Daty la token', { expires: new Date(Date.now() + 18000000)});
           res.redirect('/')
         }
         else{
